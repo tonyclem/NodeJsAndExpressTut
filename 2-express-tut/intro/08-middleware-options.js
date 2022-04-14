@@ -16,6 +16,7 @@ const logger = (req, res, next) => {
 // app.use("/api", logger);
 // app.use([logger, authorize]);
 // app.use(express.static("./public"))
+app.use(logger);
 
 // morgan is a middleware that logs the request in the console
 app.use(morgan("tiny"));

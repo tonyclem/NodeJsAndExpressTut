@@ -17,7 +17,7 @@ app.use("/api/v1/tasks", tasks);
 app.use(notFound);
 app.use(errorHandler);
 
-const port = process.env.PORT || 3000;
+// const port = process.env.PORT || 6000;
 
 const startServer = async () => {
   try {
@@ -31,7 +31,7 @@ const startServer = async () => {
   }
 };
 
-startServer();
+// startServer();
 
 // app.get('/api/v1/tasks')  - get all the tasks
 // app.post("/api/v1/task")  - create a new tasks

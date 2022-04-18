@@ -18,14 +18,14 @@ app.get("/", (req, res) => {
   res.send("<h1>Store API</h1><a href='/api/v1/products'>Products routes</a>");
 });
 
-app.use("/api/v1/products", productsRouter); //
+app.use("/api/v1/products", productsRouter);
 
 // products routes
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
 
 // port variable
-const port = process.env.PORT || 8080;
+// const port = process.env.PORT || 8080;
 
 const startServer = async () => {
   try {

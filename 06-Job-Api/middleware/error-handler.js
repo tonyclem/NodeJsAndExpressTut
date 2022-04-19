@@ -1,4 +1,4 @@
-const { CustomAPIError } = require("../errors");
+// const { CustomAPIError } = require("../errors");
 const { StatusCodes } = require("http-status-codes");
 
 // error handler
@@ -8,8 +8,15 @@ const errorHandlerMiddleware = (err, req, res, next) => {
     message: err.message || "Something went wrong try again later",
   };
 
-  if (err instanceof CustomAPIError) {
-    return res.status(err.statusCode).json({ msg: err.message });
+  // if (err instanceof CustomAPIError) {
+  //   return res.status(err.statusCode).json({ msg: err.message });
+  // } // we can use the down below code to handle the error as well
+
+  if (err.name === "ValidatorError") {
+    customError.message = Object.values(err.errors)
+      .map((error) => error.message)
+      .join(","); // this will return the error message inside the object,
+    customError.statusCode = 400;
   }
 
   if (err.code && err.code === 11000) {
@@ -18,7 +25,7 @@ const errorHandlerMiddleware = (err, req, res, next) => {
     )} field, please chooses another value`;
     customError.statusCode = 400;
   }
-  // return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ err })
+  // return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ err });
   return res.status(customError.statusCode).json({ msg: customError.message });
 };
 

@@ -1,0 +1,17 @@
+{
+  "name": "NodeOverview",
+  "version": "1.0.0",
+  "description": "Testing Tools",
+  "main": "index.js",
+  "scripts": {
+    "test": "index.js"
+  },
+  "author": "Clement Anthony",
+  "license": "ISC",
+  "dependencies": {
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  }
+}

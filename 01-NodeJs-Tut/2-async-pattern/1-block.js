@@ -2,16 +2,16 @@ const http = require("http");
 
 const server = http.createServer((req, res) => {
   if (req.url === "/") {
-    res.end("Home Page");
+    res.end("<h1>Home Page</h1>");
   }
   if (req.url === "/about") {
     // blocking code
-    for (let i = 0; i < 1000; i++) {
-      for (let j = 0; j < 1000; j++) {
+    for (let i = 0; i < 50; i++) {
+      for (let j = 0; j < 50; j++) {
         console.log(`${i} ${j}`);
       }
     }
-    res.end("About Page");
+    res.end(`<h1>About Page </h1>`);
   }
   res.end("Error Page");
 });

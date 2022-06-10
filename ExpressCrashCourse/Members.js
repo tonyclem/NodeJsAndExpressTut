@@ -1,4 +1,4 @@
-const Members = [
+const members = [
   {
     id: 1,
     name: "John Don",
@@ -17,6 +17,17 @@ const Members = [
     email: "shannon@gmail.com",
     status: "active",
   },
+  {
+    id: 4,
+    name: "Clement Anthony",
+    email: "clement@gmail.com",
+    status: "active",
+  },
+  {
+    id: 5,
+    name: "lion King",
+    email: "lionking@gmail.com",
+  },
 ];
 
-module.exports = Members;
+module.exports = members;

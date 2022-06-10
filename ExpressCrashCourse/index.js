@@ -1,22 +1,15 @@
 const express = require("express");
 const path = require("path");
-const Members = require("./Members");
 
 const app = express();
 
-const logger = (req, res, next) => {
-  console.log(`${req.protocol}://${req.get("host")}${req.originalUrl}`);
-  next();
-};
+// Body Parser Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-app.use(logger);
+// Routes all members
+app.use("/api/members", require("./routes/api/members"));
 
-// Gets All Members
-app.get("/api/member", (req, res) => {
-  res.json(Members);
-});
-
-// this get all the element in public files and use it
 app.use(express.static(path.join(__dirname, "public")));
 
 const PORT = process.env.PORT || 8000;

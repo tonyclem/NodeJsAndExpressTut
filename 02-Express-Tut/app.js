@@ -3,6 +3,8 @@ const app = express();
 
 const people = require("./routes/people");
 
+const auth = require("./routes/auth");
+
 app.use(express.static("./methods-public"));
 
 // parse form data
@@ -11,14 +13,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.use("/api/people", people);
-
-app.post("/login", (req, res) => {
-  const { name } = req.body;
-  if (name) {
-    return res.status(200).send(`Welcome ${name}`);
-  }
-  res.status(401).send("POST ERROR");
-});
+app.use("/login", auth);
 
 app.listen(8080, () => {
   console.log("Server is running at port 8080");

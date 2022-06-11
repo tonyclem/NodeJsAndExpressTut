@@ -46,7 +46,7 @@ app.get("/api/v1/query", (req, res) => {
   // if the search is true, then filter the products that match the search input
   if (search) {
     sortedProducts = sortedProducts.filter((product) => {
-      return product.name.startsWith(search);
+      return product.name.startsWith(search); // startsWith same as includes
     });
   }
   // if the limit is true, and the limit is a number

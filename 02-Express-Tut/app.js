@@ -1,26 +1,27 @@
 const express = require("express");
-const morgan = require("morgan");
 const app = express();
 
-const people = require("./routes/people");
-const auth = require("./routes/auth");
+let { people } = require("./data");
 
-app.use(morgan("tiny"));
-
-// Static assets
 app.use(express.static("./methods-public"));
 
-// Parse form data
+// parse form data
 app.use(express.urlencoded({ extended: false }));
-// Parse JSON data
-app.use(express.json());
+// parse json
 
-// Routes
-app.use("/api/people", people);
+app.get("/api/people", (req, res) => {
+  res.status(200).json({ success: true, data: people });
+});
 
-// Authorize
-app.use("/login", auth);
+app.post("/login", (req, res) => {
+  const { name } = req.body;
+  if (name) {
+    return res.status(200).send(`Welcome ${name}`);
+  }
+  console.log(req.body);
+  res.status(401).send("POST CLEMENT");
+});
 
-// app.listen(5000, () => {
-//   console.log("Server is listing on port 5000......");
-// });
+app.listen(8080, () => {
+  console.log("hello king of billionarie the Server is running at port 8080");
+});

@@ -1,17 +1,18 @@
 {
-  "name": "2-express-tut",
+  "name": "02-express-tut",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "node index",
+    "dev": "nodemon index"
   },
   "author": "",
   "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  },
   "dependencies": {
-    "express": "^4.17.3",
-    "lodash": "^4.17.21",
-    "morgan": "^1.10.0",
-    "nodemon": "^2.0.15"
+    "express": "^4.18.1"
   }
 }

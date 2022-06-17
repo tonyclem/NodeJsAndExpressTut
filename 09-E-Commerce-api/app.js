@@ -30,7 +30,7 @@ app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
 // port
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 // start server
 

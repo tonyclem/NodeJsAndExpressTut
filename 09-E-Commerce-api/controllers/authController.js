@@ -1,7 +1,16 @@
+const { StatusCodes } = require("http-status-codes");
 const User = require("../models/User");
+const CustomAPIError = require("../errors");
 
 const register = async (req, res) => {
-  res.send("Hello register");
+  const { email } = req.body;
+  const emailAlreadyExists = await User.findOne({ email });
+  if (emailAlreadyExists) {
+    throw new CustomAPIError.BadRequestError("Email Already exists");
+  }
+
+  const user = await User.create(req.body);
+  res.status(StatusCodes.CREATED).json({ user });
 };
 
 const login = async (req, res) => {

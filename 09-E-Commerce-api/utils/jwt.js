@@ -7,7 +7,7 @@ const createJWT = ({ payload }) => {
   return token;
 };
 
-const isTokenVaild = ({ token }) => jwt.verify(token, process.env.JWT_SECERET);
+const isTokenVaild = ({ token }) => jwt.verify(token, process.env.JWT_SECRET);
 
 const attachCookiesToResponse = ({ res, user }) => {
   const token = createJWT({ payload: user });

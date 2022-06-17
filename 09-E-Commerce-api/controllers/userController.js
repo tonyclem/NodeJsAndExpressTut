@@ -1,9 +1,19 @@
+const User = require("../models/User");
+const { StatusCodes } = require("http-status-codes");
+const { CustomAPIError } = require("../errors");
+
 const getAllUsers = async (req, res) => {
-  res.send("Hello get all user");
+  const users = await User.find({ role: "user" }).select("-password");
+  res.status(StatusCodes.OK).json({ users, amount: users.length });
 };
 
 const getSingleUser = async (req, res) => {
-  res.send("Hello get single user");
+  const { id: userID } = req.params;
+  const user = await User.findOne({ _id: userID }).select("-password");
+  if (!user) {
+    throw new CustomAPIError.NotFoundError("Not Found");
+  }
+  res.status(StatusCodes.CREATED).json({ user });
 };
 
 const showCurrentUser = async (req, res) => {

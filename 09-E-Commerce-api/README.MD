@@ -81,8 +81,8 @@
 - [x] refactor cookie code
 - [x] setup func attachCookiesToResponse
 - [x] accept payload(res, tokenUser)
-- [] create token, setup cookie
-- [] optionally send back the response
+- [x] create token, setup cookie
+- [x] optionally send back the response
 
 #### Login Route
 

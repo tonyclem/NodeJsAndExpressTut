@@ -1,6 +1,7 @@
 const { StatusCodes } = require("http-status-codes");
 const CustomAPIError = require("../errors");
 const Product = require("../models/Product");
+const path = require("path");
 
 const createProduct = async (req, res) => {
   req.body.user = req.user.userId;
@@ -51,7 +52,29 @@ const deleteProduct = async (req, res) => {
 };
 
 const uploadImage = async (req, res) => {
-  res.send("uploadImage for all products");
+  const productImage = req.files.image;
+
+  if (!productImage) {
+    throw new CustomAPIError.BadRequestError("Please upload a product image");
+  }
+
+  const mixSide = 1024 * 1024;
+
+  if (productImage.size > mixSide) {
+    throw new CustomAPIError.BadRequestError(
+      "Please upload image smaller than 1MB"
+    );
+  }
+
+  const imagePath = path.join(
+    __dirname,
+    "../public/uploads/" + `${productImage.name}`
+  );
+
+  await productImage.mv(imagePath);
+  return res
+    .status(StatusCodes.OK)
+    .json({ image: `/uploads/${productImage.name}` });
 };
 
 module.exports = {

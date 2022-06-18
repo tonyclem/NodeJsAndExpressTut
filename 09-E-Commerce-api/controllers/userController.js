@@ -1,7 +1,11 @@
 const User = require("../models/User");
 const { StatusCodes } = require("http-status-codes");
 const { CustomAPIError } = require("../errors");
-const { createTokenUser, attachCookiesToResponse } = require("../utils");
+const {
+  createTokenUser,
+  attachCookiesToResponse,
+  checkPermissions,
+} = require("../utils");
 
 const getAllUsers = async (req, res) => {
   console.log(req.user);
@@ -15,6 +19,7 @@ const getSingleUser = async (req, res) => {
   if (!user) {
     throw new CustomAPIError.NotFoundError("Not Found");
   }
+  checkPermissions(req.user, user._id);
   res.status(StatusCodes.CREATED).json({ user });
 };
 
@@ -28,14 +33,12 @@ const updateUser = async (req, res) => {
     throw new CustomError.BadRequestError("Please provide all values");
   }
 
-  const user = await User.findOneAndUpdate(
-    { _id: req.user.userId },
-    { email, name },
-    {
-      new: true,
-      runValidators: true,
-    }
-  );
+  const user = await User.findOne({ _id: req.user.userId });
+
+  user.email = email;
+  user.name = name;
+  await user.save();
+
   const tokenUser = createTokenUser(user);
   attachCookiesToResponse({ res, user: tokenUser });
   res.status(StatusCodes.OK).json({ user: tokenUser });
@@ -67,3 +70,23 @@ module.exports = {
   updateUser,
   updateUserAndPassword,
 };
+
+// update user using findOneAndUpdate methods
+// const updateUser = async (req, res) => {
+//   const { name, email } = req.body;
+//   if (!email || !name) {
+//     throw new CustomError.BadRequestError("Please provide all values");
+//   }
+
+//   const user = await User.findOneAndUpdate(
+//     { _id: req.user.userId },
+//     { email, name },
+//     {
+//       new: true,
+//       runValidators: true,
+//     }
+//   );
+//   const tokenUser = createTokenUser(user);
+//   attachCookiesToResponse({ res, user: tokenUser });
+//   res.status(StatusCodes.OK).json({ user: tokenUser });
+// };

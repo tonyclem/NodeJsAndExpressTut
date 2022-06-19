@@ -13,7 +13,7 @@ const {
   updateProduct,
   deleteProduct,
   uploadImage,
-} = require("../controllers/prodectController");
+} = require("../controllers/productController");
 
 router
   .route("/")

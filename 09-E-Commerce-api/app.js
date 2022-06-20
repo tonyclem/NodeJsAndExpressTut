@@ -33,6 +33,7 @@ app.get("/api/v1", (req, res) => {
   console.log(req.signedCookies);
   res.send("<h1>Welcome to E-commerce Api</h1>");
 });
+
 app.get("/", (req, res) => {
   res.send("<h1>Welcome to E-commerce Api</h1>");
 });

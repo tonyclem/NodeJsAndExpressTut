@@ -20,12 +20,12 @@ const ReviewSchema = new mongoose.Schema(
     },
     user: {
       type: mongoose.Schema.ObjectId,
-      ref: "user",
+      ref: "User",
       required: true,
     },
     product: {
       type: mongoose.Schema.ObjectId,
-      ref: "product",
+      ref: "Product",
       required: true,
     },
   },

@@ -8,6 +8,12 @@ const fileUpload = require("express-fileupload");
 const express = require("express");
 const app = express();
 
+const rateLimiter = require("express-rate-limit");
+const helmet = require("helmet");
+const xss = require("xss-clean");
+const cors = require("cors");
+const mongoSanitize = require("express-mongo-sanitize");
+
 // Middleware Express
 // connectDB
 const connectDB = require("./db/connect");
@@ -22,6 +28,19 @@ const orderRouter = require("./routes/orderRoutes");
 // Error handle
 const notFoundMiddleware = require("./middleware/not-found");
 const errorHandlerMiddleware = require("./middleware/error-handler");
+
+app.set("trues proxy", 1);
+app.use(
+  rateLimiter({
+    windowMs: 15 * 60 * 60 * 1000,
+    max: 60,
+  })
+);
+
+app.use(helmet());
+app.use(cors());
+app.use(xss());
+app.use(mongoSanitize());
 
 app.use(morgan("tiny"));
 app.use(express.json());

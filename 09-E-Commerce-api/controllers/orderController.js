@@ -6,21 +6,34 @@ const { checkPermissions } = require("../utils");
 const { StatusCodes } = require("http-status-codes");
 const CustomAPIError = require("../errors");
 
+// fakeStripeAPI
 const fakeStripeAPI = async ({ amount, currency }) => {
   const client_secret = "someRandomValue";
   return { client_secret, amount };
 };
 
 const getAllOrders = async (req, res) => {
-  res.send("Get all orders");
+  const order = await Order.find({});
+  res.status(StatusCodes.OK).json({ order, count: order.length });
 };
 
 const getSingleOrder = async (req, res) => {
-  res.send("Get single order orders");
+  const { id: orderId } = req.params;
+  const order = await Order.findOne({ id_: orderId });
+
+  if (!order) {
+    throw new CustomAPIError.NotFoundError(
+      `No such order found with ${orderId}`
+    );
+  }
+
+  checkPermissions(req.user, order.user);
+  res.status(StatusCodes.OK).json({ order });
 };
 
 const getCurrentUserOrders = async (req, res) => {
-  res.send("Get all orders");
+  const orders = await Order.find({ user: req.user.userId });
+  res.status(StatusCodes.CREATED).json({ orders, count: orders.length });
 };
 
 const createOrder = async (req, res) => {
@@ -55,6 +68,7 @@ const createOrder = async (req, res) => {
     };
     // add item to order list
     orderItems = [...orderItems, singleOrderItem];
+    // calculate subtotal
     subtotal += item.amount * price;
   }
 
@@ -83,7 +97,23 @@ const createOrder = async (req, res) => {
 };
 
 const updateOrder = async (req, res) => {
-  res.send("Get all orders");
+  const { id: orderId } = req.params;
+  const { paymentIntentId } = req.body;
+
+  const order = await Order.findOne({ id_: orderId });
+  if (!order) {
+    throw new CustomAPIError.NotFoundError(
+      `No such order found with ${orderId}`
+    );
+  }
+
+  checkPermissions(req.user, order.user);
+
+  order.paymentIntentId = paymentIntentId;
+  order.status = "paid";
+  await order.save();
+
+  res.status(StatusCodes.OK).json({ order });
 };
 
 module.exports = {

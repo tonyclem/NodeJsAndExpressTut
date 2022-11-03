@@ -14,7 +14,6 @@ const xss = require("xss-clean");
 const cors = require("cors");
 const mongoSanitize = require("express-mongo-sanitize");
 
-// Middleware Express
 // connectDB
 const connectDB = require("./db/connect");
 
@@ -64,6 +63,7 @@ app.use("/api/v1/products", productRouter);
 app.use("/api/v1/reviews", reviewRouter);
 app.use("/api/v1/orders", orderRouter);
 
+// Middleware
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 

@@ -1,34 +1,34 @@
-require("dotenv").config();
-require("express-async-errors");
+require('dotenv').config();
+require('express-async-errors');
 
-const morgan = require("morgan");
-const cookieParser = require("cookie-parser");
-const fileUpload = require("express-fileupload");
+const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
+const fileUpload = require('express-fileupload');
 // Express
-const express = require("express");
+const express = require('express');
 const app = express();
 
-const rateLimiter = require("express-rate-limit");
-const helmet = require("helmet");
-const xss = require("xss-clean");
-const cors = require("cors");
-const mongoSanitize = require("express-mongo-sanitize");
+const rateLimiter = require('express-rate-limit');
+const helmet = require('helmet');
+const xss = require('xss-clean');
+const cors = require('cors');
+const mongoSanitize = require('express-mongo-sanitize');
 
 // connectDB
-const connectDB = require("./db/connect");
+const connectDB = require('./db/connect');
 
 // routers
-const authRouter = require("./routes/authRoutes");
-const userRouter = require("./routes/userRoutes");
-const productRouter = require("./routes/productRoutes");
-const reviewRouter = require("./routes/reviewRoutes");
-const orderRouter = require("./routes/orderRoutes");
+const authRouter = require('./routes/authRoutes');
+const userRouter = require('./routes/userRoutes');
+const productRouter = require('./routes/productRoutes');
+const reviewRouter = require('./routes/reviewRoutes');
+const orderRouter = require('./routes/orderRoutes');
 
 // Error handle
-const notFoundMiddleware = require("./middleware/not-found");
-const errorHandlerMiddleware = require("./middleware/error-handler");
+const notFoundMiddleware = require('./middleware/not-found');
+const errorHandlerMiddleware = require('./middleware/error-handler');
 
-app.set("trues proxy", 1);
+app.set('trues proxy', 1);
 app.use(
   rateLimiter({
     windowMs: 15 * 60 * 60 * 1000,
@@ -41,27 +41,27 @@ app.use(cors());
 app.use(xss());
 app.use(mongoSanitize());
 
-app.use(morgan("tiny"));
+app.use(morgan('tiny'));
 app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
 
-app.use(express.static("./public"));
+app.use(express.static('./public'));
 app.use(fileUpload());
 
-app.get("/api/v1", (req, res) => {
+app.get('/api/v1', (req, res) => {
   console.log(req.signedCookies);
-  res.send("<h1>Welcome to E-commerce Api</h1>");
+  res.send('<h1>Welcome to E-commerce Api</h1>');
 });
 
-app.get("/", (req, res) => {
-  res.send("<h1>Welcome to E-commerce Api</h1>");
+app.get('/', (req, res) => {
+  res.send('<h1>Welcome to E-commerce Api</h1>');
 });
 
-app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/users", userRouter);
-app.use("/api/v1/products", productRouter);
-app.use("/api/v1/reviews", reviewRouter);
-app.use("/api/v1/orders", orderRouter);
+app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/users', userRouter);
+app.use('/api/v1/products', productRouter);
+app.use('/api/v1/reviews', reviewRouter);
+app.use('/api/v1/orders', orderRouter);
 
 // Middleware
 app.use(notFoundMiddleware);
